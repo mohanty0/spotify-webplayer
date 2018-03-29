@@ -1,0 +1,22 @@
+.primary_color_background {
+	background-color: #0069c0 !important;
+}
+
+.no-background {
+	background-color: transparent !important;
+}
+
+body {
+	background-color: white;
+}
+
+#login, #loggedin {
+        display: none;
+}
+
+.text-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 500px;
+      }
