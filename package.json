@@ -17,10 +17,13 @@
     "react-bootstrap-typeahead": "^2.0.0-alpha.5",
     "react-dom": "^16.0.0",
     "react-modal": "^3.0.4",
+    "react-redux": "^5.0.7",
     "react-swipeable-views": "^0.12.8",
     "react-tap-event-plugin": "^3.0.2",
     "react-toolbox": "^2.0.0-beta.12",
     "react-typeahead": "^2.0.0-alpha.6",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   },
@@ -50,18 +53,8 @@
       "react"
     ],
     "plugins": [
-      "transform-object-rest-spread", 
+      "transform-object-rest-spread",
       "transform-class-properties"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nalliso/mjtaxes.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nalliso/mjtaxes/issues"
-  },
-  "homepage": "https://github.com/nalliso/mjtaxes#readme"
+  }
 }
