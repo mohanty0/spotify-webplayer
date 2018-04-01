@@ -56,15 +56,5 @@
       "transform-object-rest-spread",
       "transform-class-properties"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nalliso/mjtaxes.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nalliso/mjtaxes/issues"
-  },
-  "homepage": "https://github.com/nalliso/mjtaxes#readme"
+  }
 }

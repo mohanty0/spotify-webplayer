@@ -5,14 +5,8 @@ import FlatButton from 'material-ui/FlatButton'
 
 class WebPlayerContainer extends React.Component {
 
-
-  componentDidMount = () => {
-  
-  }
-
-
-
   render() {
+		console.log('is playing?' + this.props.isPlaying)
     return (
 		<div> 
 		  <img src="http://placehold.it/75x75" />
@@ -20,7 +14,7 @@ class WebPlayerContainer extends React.Component {
 	    	
 			    <FlatButton 
 			    	label={this.props.isPlaying ? 'pause' : 'play'}
-			    	onClick={ () =>  this.props.playPause(this.props.access_token, this.props.isPlaying)}
+			    	onClick={ () =>  this.props.playPause(this.props.access_token, this.props.isPlaying )}
 			    />
 	 	  </div> 
 		</div>      
@@ -38,7 +32,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		isPlaying: state.isPlaying,
+		isPlaying: state.controls.isPlaying,
 
 	}
 }

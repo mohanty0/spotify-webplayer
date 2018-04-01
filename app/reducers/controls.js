@@ -1,7 +1,7 @@
 import {PLAY_SONG, PAUSE_SONG} from '../actions/controls'
 
 
-const controls = (state = [], action)  => {
+const controls = (state = {}, action)  => {
     switch (action.type) {
         case PLAY_SONG : 
             return {
