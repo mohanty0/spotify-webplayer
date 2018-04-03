@@ -1,87 +1,28 @@
-import axios from 'axios';
-import React from 'react';
+import axios from 'axios'
+import React from 'react'
+import {connect } from 'react-redux' 
 import WebPlayerContainer from './WebPlayer/WebPlayerContainer'
-import LoginPage from './LoginPage/LoginPage'; 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import LoginPage from './LoginPage/LoginPage'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+
+import {handleCheckLoggedIn} from '../actions/auth'
 
 class App extends React.Component {
 
-  //create state with the access token and refresh token. 
-    //if access token missing, then red
-  constructor(props) { 
-    super(props); 
-
-    this.state = {
-      access_token: "", 
-      refresh_token: "", 
-      error: "",
-      userid: "" 
-    }
-  }
-
   componentDidMount = () => {
-    if (this.checkAuth()) {
-      this.getBasicInfo(); 
-    }
-  }
-
-  getBasicInfo = async () => {
-    try {
-      const authString =  await 'Bearer ' + this.state.access_token; 
-      console.log(authString); 
-      const res = await fetch('https://api.spotify.com/v1/me' ,
-        { headers: {
-            'Authorization': authString
-          }, 
-          method: 'GET'
-      }); 
-      const resJson = await res.json(); 
-      this.setState(prevState => ({
-        userid: resJson.id
-      })); 
-    }
-    catch (e) {
-      console.log("There was an error"); 
-      console.log(e); 
-    }
-  }
-
-  getHashParams = () => {
-    let hashParams = {};
-    let e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-    }
-
-    return hashParams;
-  }
-
-  checkAuth = () => {
-    let params = this.getHashParams(); 
-
-    this.setState(prevState => ({
-        access_token: params.access_token, 
-        refresh_token: params.refresh_token, 
-        error : params.error 
-     }));
-
-    return params.access_token ? true : false; 
-  }
-
-  obtainNewToken = () => {
-    //refresh token
+    this.props.checkLoggedIn()
   }
 
   render = () => {
-    if (this.state.access_token) {
+    if (this.props.loggedIn) {
       return (
       <MuiThemeProvider>
       <div>
-        <WebPlayerContainer access_token={this.state.access_token}/>
+        user {this.props.userId}
+        <WebPlayerContainer/>
       </div>
       </MuiThemeProvider>      
-    );
+    )
     }
     return (
       <MuiThemeProvider>
@@ -91,5 +32,19 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loggedIn : state.auth.loggedIn, 
+    access_token: state.auth.access_token, 
+    refresh_token: state.auth.refresh_token, 
+    userId : state.auth.userId, 
+  }
+}
 
-export default App;
+const mapDispactToProps = (dispatch) => {
+  return {
+    checkLoggedIn : () => dispatch(handleCheckLoggedIn())
+  }
+}
+
+export default connect(mapStateToProps, mapDispactToProps)(App)

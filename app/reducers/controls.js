@@ -1,4 +1,5 @@
-import {PLAY_SONG, PAUSE_SONG} from '../actions/controls'
+import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG} from '../actions/controls'
+import { ENETRESET } from 'constants';
 
 
 const controls = (state = {}, action)  => {
@@ -12,6 +13,14 @@ const controls = (state = {}, action)  => {
             return {
                 ...state, 
                 isPlaying: false, 
+            }
+        case NEXT_SONG : 
+            return {
+                ...state
+            }
+        case PREV_SONG : 
+            return {
+                ...state   
             }
         default : 
             return state 
