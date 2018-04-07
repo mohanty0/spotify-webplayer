@@ -1,4 +1,4 @@
-import {LOGGED_IN, NOT_LOGGED_ID, GOT_USER_INFO} from '../actions/auth'
+import {LOGGED_IN, NOT_LOGGED_ID, GOT_USER_INFO} from '../actions/actionTypes'
 
 const auth = (state = {}, action) => {
     switch(action.type) {

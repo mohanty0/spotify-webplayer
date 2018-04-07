@@ -1,6 +1,4 @@
-export const NOT_LOGGED_IN = 'NOT_LOGGED_IN' 
-export const LOGGED_IN = 'LOGGED_IN'
-export const GOT_USER_INFO = 'GOT_USER_INFO'
+import {NOT_LOGGED_IN, LOGGED_IN, GOT_USER_INFO} from  './actionTypes'
 
 const loggedIn = (access_token, refresh_token) => {
     return {
@@ -49,6 +47,10 @@ export const handleCheckLoggedIn = () =>  async (dispatch) => {
         console.log(e) 
     }
 
+}
+
+export const handleGetRefreshToken = () => async (dispatch) => {
+    //get refresh token
 }
 
 /*helpers*/

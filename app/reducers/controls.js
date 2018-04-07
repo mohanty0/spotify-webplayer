@@ -1,8 +1,7 @@
-import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG} from '../actions/controls'
-import { ENETRESET } from 'constants';
+import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES} from '../actions/actionTypes'
+import {combineReducers} from 'redux'
 
-
-const controls = (state = {}, action)  => {
+const song_controls  = (state = {}, action)  => {
     switch (action.type) {
         case PLAY_SONG : 
             return {
@@ -20,11 +19,26 @@ const controls = (state = {}, action)  => {
             }
         case PREV_SONG : 
             return {
-                ...state   
+                ...state  
             }
         default : 
             return state 
     }
 }
 
-export default controls
+const device_controls = (state = [], action) => {
+    switch (action.type) {
+        case GOT_DEVICES : 
+            return {
+              devices: action.devices
+            }
+        default : 
+            return state 
+    }
+}
+
+const controls = combineReducers({
+    song: song_controls, 
+    device: device_controls, 
+})
+export default controls; 

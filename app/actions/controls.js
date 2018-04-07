@@ -1,7 +1,4 @@
-export const PLAY_SONG = 'PLAY_SONG'
-export const PAUSE_SONG = 'PAUSE_SONG' 
-export const NEXT_SONG = 'NEXT_SONG'
-export const PREV_SONG = 'PREV_SONG' 
+import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES} from './actionTypes'
 
 const playSong = () => {
     return {
@@ -24,6 +21,13 @@ const nextSong = () => {
 const prevSong = () => {
     return {
         type: PREV_SONG,
+    }
+}
+
+const gotDevices = (devices) => {
+    return {
+        type: GOT_DEVICES,
+        devices
     }
 }
 
@@ -79,7 +83,7 @@ export const handlePrevSong = () => async (dispatch, getState) => {
             headers: {
                 'Authorization': authString, 
             }, 
-            method: "POST"
+            method: 'POST'
         }
         const res = await fetch(url, options)
         if (res.status === 204) {
@@ -90,6 +94,29 @@ export const handlePrevSong = () => async (dispatch, getState) => {
     }
     catch (e) {
         console.log('There was an error calling /next')
+        console.log(e)
+    }
+}
+
+export const handleGetDevices = () => async (dispatch, getState) => {
+    try {
+        const authString = 'Bearer ' + getState().auth.access_token
+        const url = 'https://api.spotify.com/v1/me/player/devices'
+        const options = {
+            headers: {
+                'Authorization': authString,
+            }, 
+            method: 'GET'
+        }
+        const res = await fetch(url, options)
+        const resJson = await res.json(); 
+        if (res.status === 200) {
+            dispatch(gotDevices(resJson.devices))
+        }
+    
+    }
+    catch (e) {
+        console.log('There was an error calling /devices')
         console.log(e)
     }
 }

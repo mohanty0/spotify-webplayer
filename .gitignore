@@ -1,4 +1,7 @@
 node_modules/
 dist/static/index.bundle.js
-#oauth-config.js
+oauth-config.js
 launch.json
+
+#local
+.DS_Store

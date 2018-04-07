@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react'
 import {connect } from 'react-redux' 
-import { handlePlayPause, handleNextSong, handlePrevSong } from '../../actions/controls'
+import { handlePlayPause, handleNextSong, handlePrevSong, handleGetDevices } from '../../actions/controls'
 import FlatButton from 'material-ui/FlatButton'
 
 class WebPlayerContainer extends React.Component {
+	componentDidMount = () => {
+		this.props.getDevices()
+	}
 
-  render() {
-		console.log('is playing?' + this.props.isPlaying)
+  render = () => {
     return (
 		<div> 
 		  <img src="http://placehold.it/75x75" />
@@ -31,7 +33,7 @@ class WebPlayerContainer extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isPlaying: state.controls.isPlaying,
+		isPlaying: state.controls.song.isPlaying,
 
 	}
 }
@@ -40,7 +42,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		playPause : (access_token, isPlaying) => dispatch(handlePlayPause(access_token,isPlaying)), 
 		prevSong: () => dispatch(handlePrevSong()),
-		nextSong: () => dispatch(handleNextSong())
+		nextSong: () => dispatch(handleNextSong()),
+		getDevices: () => dispatch(handleGetDevices()),
 	}	
 }
 
