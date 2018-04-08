@@ -1,4 +1,6 @@
-import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES} from './actionTypes'
+import camelize from 'camelize'
+import  {handleGetCurrPlayback } from './music'
+import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES, ACTIVE_DEVICE, CURR_PLAYBACK} from './actionTypes'
 
 const playSong = () => {
     return {
@@ -31,10 +33,19 @@ const gotDevices = (devices) => {
     }
 }
 
-export const handlePlayPause = (access_token, isPlaying) => async (dispatch, getState) => {
+const activeDevice = (device) => {
+    return {
+        type: ACTIVE_DEVICE, 
+        device
+    }
+}
+
+
+export const handlePlayPause = () => async (dispatch, getState) => {
+    const isPlaying = getState().controls.song.isPlaying
     try {
         isPlaying ? dispatch(pauseSong()) : dispatch(playSong())
-        const authString = 'Bearer ' + getState().auth.access_token
+        const authString = 'Bearer ' + getState().auth.accessToken
         const url = isPlaying ? 'https://api.spotify.com/v1/me/player/pause' : 'https://api.spotify.com/v1/me/player/play'
         const options =  { 
             headers: {
@@ -42,7 +53,9 @@ export const handlePlayPause = (access_token, isPlaying) => async (dispatch, get
             }, 
             method: 'PUT'
         } 
-        await fetch(url, options)
+        const res = await fetch(url, options) 
+        if (res.status !== 204) 
+            throw res
 
     }
     catch (e) {
@@ -54,7 +67,7 @@ export const handlePlayPause = (access_token, isPlaying) => async (dispatch, get
 
 export const handleNextSong = () => async (dispatch, getState) => {
     try {
-        const authString = 'Bearer ' + getState().auth.access_token 
+        const authString = 'Bearer ' + getState().auth.accessToken 
         const url = 'https://api.spotify.com/v1/me/player/next'
         const options = {
             headers: {
@@ -64,9 +77,11 @@ export const handleNextSong = () => async (dispatch, getState) => {
         }
         const res = await fetch(url, options)
         if (res.status === 204) {
+            dispatch(handleGetCurrPlayback())
             dispatch(nextSong())
             dispatch(playSong())
-        }
+        } 
+        else throw res
 
     }
     catch (e) {
@@ -77,7 +92,7 @@ export const handleNextSong = () => async (dispatch, getState) => {
 
 export const handlePrevSong = () => async (dispatch, getState) => {
     try {
-        const authString = 'Bearer ' + getState().auth.access_token 
+        const authString = 'Bearer ' + getState().auth.accessToken 
         const url = 'https://api.spotify.com/v1/me/player/previous'
         const options = {
             headers: {
@@ -87,10 +102,11 @@ export const handlePrevSong = () => async (dispatch, getState) => {
         }
         const res = await fetch(url, options)
         if (res.status === 204) {
+            dispatch(handleGetCurrPlayback())
             dispatch(prevSong())
             dispatch(playSong())
-        }
-
+        } 
+        else throw res
     }
     catch (e) {
         console.log('There was an error calling /next')
@@ -100,7 +116,7 @@ export const handlePrevSong = () => async (dispatch, getState) => {
 
 export const handleGetDevices = () => async (dispatch, getState) => {
     try {
-        const authString = 'Bearer ' + getState().auth.access_token
+        const authString = 'Bearer ' + getState().auth.accessToken
         const url = 'https://api.spotify.com/v1/me/player/devices'
         const options = {
             headers: {
@@ -109,11 +125,17 @@ export const handleGetDevices = () => async (dispatch, getState) => {
             method: 'GET'
         }
         const res = await fetch(url, options)
-        const resJson = await res.json(); 
         if (res.status === 200) {
-            dispatch(gotDevices(resJson.devices))
-        }
-    
+            const resJson = await res.json()
+            const devices = camelize(resJson.devices); 
+            dispatch(gotDevices(devices))
+            for (const device of devices) {
+                if (device.isActive === true) {
+                    dispatch(activeDevice(device))
+                }
+            }
+        } 
+        else throw res 
     }
     catch (e) {
         console.log('There was an error calling /devices')

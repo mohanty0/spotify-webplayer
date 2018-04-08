@@ -7,7 +7,7 @@ const client_id = oauthConfig.client_id;
 const client_secret =oauthConfig.client_secret; 
 const redirect_uri = oauthConfig.redirect_uri; 
 const stateKey = oauthConfig.stateKey; 
-const scope = 'user-read-private user-read-email user-library-read user-read-playback-state user-modify-playback-state';
+const scope = 'user-read-private user-read-email user-library-read user-read-playback-state user-modify-playback-state user-read-recently-played';
 
 module.exports = (args) => {
     let app = args.app;

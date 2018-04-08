@@ -35,8 +35,6 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     loggedIn : state.auth.loggedIn, 
-    access_token: state.auth.access_token, 
-    refresh_token: state.auth.refresh_token, 
     userId : state.auth.userId, 
   }
 }

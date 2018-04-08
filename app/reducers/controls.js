@@ -1,7 +1,7 @@
-import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES} from '../actions/actionTypes'
+import {PLAY_SONG, PAUSE_SONG, NEXT_SONG, PREV_SONG, GOT_DEVICES, ACTIVE_DEVICE, GOT_CURR_PLAYBACK, NO_CURR_PLAYBACK} from '../actions/actionTypes'
 import {combineReducers} from 'redux'
 
-const song_controls  = (state = {}, action)  => {
+const song  = (state = {}, action)  => {
     switch (action.type) {
         case PLAY_SONG : 
             return {
@@ -15,22 +15,44 @@ const song_controls  = (state = {}, action)  => {
             }
         case NEXT_SONG : 
             return {
-                ...state
+                ...state,
             }
         case PREV_SONG : 
             return {
-                ...state  
+                ...state,  
+            }
+        case ACTIVE_DEVICE : 
+            return {
+                ...state, 
+                volume: action.device.volumePercent, 
+                playingOn: action.device.id,
+            }
+        case NO_CURR_PLAYBACK : 
+            return {
+                ...state, 
+                isPlaying: false,
+            }
+        case GOT_CURR_PLAYBACK : 
+            return {
+                ...state, 
+                isPlaying: state.isPlaying || action.playback.isPlaying, 
+                volume: action.playback.device.volumePercent,
+                playingOn: action.playback.device.id, 
+                shuffleState: action.playback.shuffleState, 
+                repeatState: action.playback.repeatState, 
+                progressMs: action.playback.progressMs,
             }
         default : 
             return state 
     }
 }
 
-const device_controls = (state = [], action) => {
+const devices = (state = {}, action) => {
     switch (action.type) {
         case GOT_DEVICES : 
             return {
-              devices: action.devices
+                ...state,
+                devices: action.devices,  
             }
         default : 
             return state 
@@ -38,7 +60,7 @@ const device_controls = (state = [], action) => {
 }
 
 const controls = combineReducers({
-    song: song_controls, 
-    device: device_controls, 
+    song, 
+    devices, 
 })
 export default controls; 

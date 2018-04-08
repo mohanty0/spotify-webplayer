@@ -5,8 +5,8 @@ const auth = (state = {}, action) => {
         case LOGGED_IN:
             return {
                 ...state,
-                access_token: action.access_token, 
-                refresh_token: action.refresh_token, 
+                accessToken: action.accessToken, 
+                refreshToken: action.refreshToken, 
                 loggedIn: true, 
             }
         case NOT_LOGGED_ID: 

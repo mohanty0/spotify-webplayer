@@ -1,10 +1,10 @@
 import {NOT_LOGGED_IN, LOGGED_IN, GOT_USER_INFO} from  './actionTypes'
 
-const loggedIn = (access_token, refresh_token) => {
+const loggedIn = (accessToken, refreshToken) => {
     return {
         type : LOGGED_IN, 
-        access_token,
-        refresh_token,
+        accessToken,
+        refreshToken,
     }
 }
 

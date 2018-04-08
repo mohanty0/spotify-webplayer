@@ -1,10 +1,12 @@
-import React, { PropTypes } from 'react'
-import {connect } from 'react-redux' 
-import { handlePlayPause, handleNextSong, handlePrevSong, handleGetDevices } from '../../actions/controls'
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux' 
+import {handlePlayPause, handleNextSong, handlePrevSong, handleGetDevices } from '../../actions/controls'
+import {handleGetCurrPlayback} from '../../actions/music'
 import FlatButton from 'material-ui/FlatButton'
 
 class WebPlayerContainer extends React.Component {
 	componentDidMount = () => {
+		this.props.getCurrPlayback()
 		this.props.getDevices()
 	}
 
@@ -40,10 +42,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		playPause : (access_token, isPlaying) => dispatch(handlePlayPause(access_token,isPlaying)), 
+		playPause : () => dispatch(handlePlayPause()), 
 		prevSong: () => dispatch(handlePrevSong()),
 		nextSong: () => dispatch(handleNextSong()),
 		getDevices: () => dispatch(handleGetDevices()),
+		getCurrPlayback: () => dispatch(handleGetCurrPlayback()),
 	}	
 }
 
